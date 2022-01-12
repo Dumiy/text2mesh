@@ -316,7 +316,7 @@ def run_branched(args):
             if i % args.decayfreq == 0:
                 normweight *= args.cropdecay
 
-        if i % 100 == 0:
+        if i % 10 == 0:
             report_process(args, dir, i, loss, loss_check, losses, rendered_images)
 
     export_final_results(args, dir, losses, mesh, mlp, network_input, vertices)
@@ -324,7 +324,9 @@ def run_branched(args):
 
 def report_process(args, dir, i, loss, loss_check, losses, rendered_images):
     print('iter: {} loss: {}'.format(i, loss.item()))
-    torchvision.utils.save_image(rendered_images, os.path.join(dir, 'iter_{}.jpg'.format(i)))
+    transform  = transforms.Resize((800,600))
+    rendered_images = transform(rendered_images[0])
+    torchvision.utils.save_image([rendered_images[0]], os.path.join(dir, 'iter_{}.jpg'.format(i)))
     if args.lr_plateau and loss_check is not None:
         new_loss_check = np.mean(losses[-100:])
         # If avg loss increased or plateaued then reduce LR
