@@ -327,7 +327,7 @@ def run_branched(args):
         for image in natsorted(os.listdir(base_path)):
             if ".jpg" in image:
                 images.append(imageio.imread(base_path+"/"+image))
-        imageio.mimsave('movie.gif', images, format='GIF', duration=0.2)     
+        imageio.mimsave('movie.gif', images, format='GIF', duration=args.gif_delay)     
 
 def report_process(args, dir, i, loss, loss_check, losses, rendered_images):
     print('iter: {} loss: {}'.format(i, loss.item()))
