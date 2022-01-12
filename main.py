@@ -479,7 +479,6 @@ if __name__ == '__main__':
     parser.add_argument('--background', nargs=3, type=float, default=None)
     parser.add_argument('--seed', type=int, default=0)
     parser.add_argument('--make_gif', default=False, action='store_true')
-    parser.add_argument('--make_gif', default=False, action='store_true')
     parser.add_argument('--gif_delay', type=float, default=0.3)
     parser.add_argument('--input_normals', default=False, action='store_true')
     parser.add_argument('--symmetry', default=False, action='store_true')
