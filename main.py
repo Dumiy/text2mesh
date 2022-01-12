@@ -19,7 +19,8 @@ from PIL import Image
 import argparse
 from pathlib import Path
 from torchvision import transforms
-
+import imageio
+from natsort import natsorted
 def run_branched(args):
     Path(args.output_dir).mkdir(parents=True, exist_ok=True)
 
@@ -320,7 +321,13 @@ def run_branched(args):
             report_process(args, dir, i, loss, loss_check, losses, rendered_images)
 
     export_final_results(args, dir, losses, mesh, mlp, network_input, vertices)
-
+    if args.make_gif == True:
+        base_path = args.output_dir
+        images = []
+        for image in natsorted(os.listdir(base_path)):
+            if ".jpg" in image:
+                images.append(imageio.imread(base_path+"/"+image))
+        imageio.mimsave('movie.gif', images, format='GIF', duration=0.2)     
 
 def report_process(args, dir, i, loss, loss_check, losses, rendered_images):
     print('iter: {} loss: {}'.format(i, loss.item()))
@@ -471,7 +478,9 @@ if __name__ == '__main__':
     parser.add_argument('--show', action='store_true')
     parser.add_argument('--background', nargs=3, type=float, default=None)
     parser.add_argument('--seed', type=int, default=0)
-    parser.add_argument('--save_render', action="store_true")
+    parser.add_argument('--make_gif', default=False, action='store_true')
+    parser.add_argument('--make_gif', default=False, action='store_true')
+    parser.add_argument('--gif_delay', type=float, default=0.3)
     parser.add_argument('--input_normals', default=False, action='store_true')
     parser.add_argument('--symmetry', default=False, action='store_true')
     parser.add_argument('--only_z', default=False, action='store_true')
