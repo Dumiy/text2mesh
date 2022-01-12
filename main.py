@@ -316,7 +316,7 @@ def run_branched(args):
             if i % args.decayfreq == 0:
                 normweight *= args.cropdecay
 
-        if i % 10 == 0:
+        if i % args.iter_save == 0:
             report_process(args, dir, i, loss, loss_check, losses, rendered_images)
 
     export_final_results(args, dir, losses, mesh, mlp, network_input, vertices)
@@ -324,9 +324,7 @@ def run_branched(args):
 
 def report_process(args, dir, i, loss, loss_check, losses, rendered_images):
     print('iter: {} loss: {}'.format(i, loss.item()))
-    transform  = transforms.Resize((800,600))
-    rendered_images = transform(rendered_images[0])
-    torchvision.utils.save_image([rendered_images[0]], os.path.join(dir, 'iter_{}.jpg'.format(i)))
+    torchvision.utils.save_image(rendered_images, os.path.join(dir, 'iter_{}.jpg'.format(i)))
     if args.lr_plateau and loss_check is not None:
         new_loss_check = np.mean(losses[-100:])
         # If avg loss increased or plateaued then reduce LR
@@ -450,6 +448,7 @@ if __name__ == '__main__':
     parser.add_argument('--frontview', action='store_true')
     parser.add_argument('--no_prompt', default=False, action='store_true')
     parser.add_argument('--exclude', type=int, default=0)
+    parser.add_argument('--iter_save', default=100, action='store_true')
 
     parser.add_argument('--frontview_std', type=float, default=8)
     parser.add_argument('--frontview_center', nargs=2, type=float, default=[0., 0.])
