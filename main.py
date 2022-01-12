@@ -327,7 +327,7 @@ def run_branched(args):
         for image in natsorted(os.listdir(base_path)):
             if ".jpg" in image:
                 images.append(imageio.imread(base_path+"/"+image))
-        imageio.mimsave('movie.gif', images, format='GIF', duration=args.gif_delay)     
+        imageio.mimsave('movie.gif', images, format='GIF', duration=0.2)     
 
 def report_process(args, dir, i, loss, loss_check, losses, rendered_images):
     print('iter: {} loss: {}'.format(i, loss.item()))
@@ -456,7 +456,7 @@ if __name__ == '__main__':
     parser.add_argument('--no_prompt', default=False, action='store_true')
     parser.add_argument('--exclude', type=int, default=0)
     parser.add_argument('--iter_save', type=int, default=100)
-
+    parser.add_argument('--save_render', action="store_true")
     parser.add_argument('--frontview_std', type=float, default=8)
     parser.add_argument('--frontview_center', nargs=2, type=float, default=[0., 0.])
     parser.add_argument('--clipavg', type=str, default=None)
@@ -478,7 +478,7 @@ if __name__ == '__main__':
     parser.add_argument('--show', action='store_true')
     parser.add_argument('--background', nargs=3, type=float, default=None)
     parser.add_argument('--seed', type=int, default=0)
-    parser.add_argument('--make_gif', default=False, action='store_true')
+    parser.add_argument('--make_gif', action='store_true')
     parser.add_argument('--gif_delay', type=float, default=0.3)
     parser.add_argument('--input_normals', default=False, action='store_true')
     parser.add_argument('--symmetry', default=False, action='store_true')
