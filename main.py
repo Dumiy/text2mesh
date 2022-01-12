@@ -316,7 +316,7 @@ def run_branched(args):
             if i % args.decayfreq == 0:
                 normweight *= args.cropdecay
 
-        if i % 100 == 0:
+        if i % args.iter_save == 0:
             report_process(args, dir, i, loss, loss_check, losses, rendered_images)
 
     export_final_results(args, dir, losses, mesh, mlp, network_input, vertices)
@@ -448,6 +448,7 @@ if __name__ == '__main__':
     parser.add_argument('--frontview', action='store_true')
     parser.add_argument('--no_prompt', default=False, action='store_true')
     parser.add_argument('--exclude', type=int, default=0)
+    parser.add_argument('--iter_save', default=100, action='store_true')
 
     parser.add_argument('--frontview_std', type=float, default=8)
     parser.add_argument('--frontview_center', nargs=2, type=float, default=[0., 0.])
